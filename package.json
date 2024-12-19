@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Feel free to delete this and start from scratch.",
   "main": "app.js",
-  "type": "module",
+  "type": "commonjs",
   "bin": {
     "week-4-rest-api-hackathon-1functionman": "bin/listen.js"
   },
