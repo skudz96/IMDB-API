@@ -1,0 +1,29 @@
+{
+  "name": "week-4-rest-api-hackathon-1functionman",
+  "version": "1.0.0",
+  "description": "Feel free to delete this and start from scratch.",
+  "main": "app.js",
+  "type": "module",
+  "bin": {
+    "week-4-rest-api-hackathon-1functionman": "bin/listen.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch bin/listen.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SchoolOfCode/week-4-rest-api-hackathon-1functionman.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SchoolOfCode/week-4-rest-api-hackathon-1functionman/issues"
+  },
+  "homepage": "https://github.com/SchoolOfCode/week-4-rest-api-hackathon-1functionman#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "uuid": "^11.0.3"
+  }
+}
