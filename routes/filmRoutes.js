@@ -1,5 +1,10 @@
 const express = require("express");
-const { readFilmData } = require("../models/filmFunctions");
+const {
+  readFilmData,
+  getFilmById,
+  replaceFilmById,
+} = require("../models/filmFunctions");
+const { type } = require("os");
 
 // setting up the router
 const router = express.Router();
@@ -13,6 +18,56 @@ router.get("/", async (req, res) => {
     let data = {
       success: true,
       payload: filmData,
+    };
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// getting a film by its ID
+
+router.get("/:id", async (req, res) => {
+  try {
+    let searchedId = JSON.parse(req.params.id); // Same stuff we got stuck on yesterday. CHECK TYPE and CONVERT IF NEEDED
+    console.log(typeof searchedId);
+    let searchedFilm = await getFilmById(searchedId);
+
+    if (!searchedFilm) {
+      res.status(404);
+    }
+
+    let data = {
+      success: true,
+      payload: searchedFilm,
+    };
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// replacing a film
+
+router.put("/:id", async (req, res) => {
+  try {
+    let searchedId = JSON.parse(req.params.id);
+    let newFilmInfo = req.body;
+    let replaceFilm = await replaceFilmById(searchedId, newFilmInfo);
+
+    console.log(newFilmInfo);
+
+    let data = {
+      success: true,
+      payload: replaceFilm,
     };
     res.status(200).json(data);
   } catch (error) {
