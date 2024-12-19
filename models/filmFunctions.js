@@ -26,27 +26,27 @@ async function readFilmData() {
   console.log(filmData);
 }
 
-
 //create new film function
 async function createNewFilm(newFilm) {
   try {
-  //read films array with ids already generated
-    const filmArray= await readFilmData();
-  //append new variable to film array
+    //read films array with ids already generated
+    const filmArray = await readFilmData();
+    //append new variable to film array
     filmArray.push(newFilm);
-//save the updated array to the data file
+    //save the updated array to the data file
     await writeData(filmArray);
-//return newly created data object
-    return(newFilm);
+    //return newly created data object
+    console.log(filmArray.length);
+    await assignIDs();
+    return newFilm;
   } catch {
-  console.error(error, "message: post request failed")
+    console.error(error, "message: post request failed");
   }
 }
 
 //function to delete film
 //search through film array and select by id
 //
-
 
 // Getting a film by ID. IDs are dynamically updated before a film is fetched
 async function getFilmById(filmId) {
@@ -114,6 +114,4 @@ module.exports = {
   replaceFilmById,
   updateFilmDataById,
   createNewFilm,
-  
-
 };
