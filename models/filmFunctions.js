@@ -21,8 +21,30 @@ async function assignIDs() {
 async function readFilmData() {
   const filmData = await assignIDs();
   return filmData;
+  console.log(filmData);
 }
+
+//create new film function
+async function createNewFilm(newFilm) {
+  try {
+  //read films array with ids already generated
+    const filmArray= await readFilmData();
+  //append new variable to film array
+    filmArray.push(newFilm);
+//save the updated array to the data file
+    await writeData(filmArray);
+//return newly created data object
+    return(newFilm);
+  } catch {
+  console.error(error, "message: post request failed")
+  }
+}
+
+//function to delete film
+//search through film array and select by id
+//
 
 module.exports = {
   readFilmData,
+  createNewFilm,
 };
