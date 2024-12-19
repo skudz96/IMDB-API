@@ -108,10 +108,21 @@ async function updateFilmDataById(filmId, filmUpdates) {
   return updated;
 }
 
+// Logic for finding a random film from our database
+async function getRandomFilm() {
+  let filmData = await readFilmData();
+  let randomNumberGen = Math.floor(Math.random() * filmData.length);
+
+  let randomFilm = filmData[randomNumberGen];
+  console.log(randomFilm);
+  return randomFilm;
+}
+
 module.exports = {
   readFilmData,
   getFilmById,
   replaceFilmById,
   updateFilmDataById,
   createNewFilm,
+  getRandomFilm,
 };

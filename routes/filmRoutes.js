@@ -1,15 +1,14 @@
 const express = require("express");
 
-
 const {
   readFilmData,
   getFilmById,
   replaceFilmById,
   updateFilmDataById,
-    createNewFilm,
+  createNewFilm,
+  getRandomFilm,
 } = require("../models/filmFunctions");
 const { type } = require("os");
-
 
 // setting up the router
 const router = express.Router();
@@ -34,10 +33,30 @@ router.get("/", async (req, res) => {
   }
 });
 
+// routing GET request for a random film -- ERRORS DONE PROPERLY?
+// This was giving an error as it was clashing with /:id. Apparently this has to come before it as express matches routes in the order they're defined
+router.get("/random", async (req, res) => {
+  try {
+    console.log(req.params);
+    let randomFilm = await getRandomFilm();
 
-//post request to create new film and append it to film array, post request to /, 
+    let data = {
+      success: true,
+      payload: randomFilm,
+    };
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+//post request to create new film and append it to film array, post request to /,
 router.post("/", async function (req, res) {
-  let filmData= await readFilmData();
+  let filmData = await readFilmData();
   //uses req.body to store as a variable
   let userInput = req.body;
 
@@ -45,14 +64,14 @@ router.post("/", async function (req, res) {
   let createdFilm = await createNewFilm(userInput);
 
   //create data object with success boolean and payload
-  const data= {
+  const data = {
     success: true,
-    payload: createdFilm
-  }
+    payload: createdFilm,
+  };
 
   //respond with status and complete data set
   res.status(201).json(data);
-})
+});
 
 // getting a film by its ID -- ERRORS DONE PROPERLY?
 
@@ -126,6 +145,5 @@ router.patch("/:id", async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
