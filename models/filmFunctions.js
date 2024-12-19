@@ -63,10 +63,31 @@ async function replaceFilmById(filmId, filmReplacement) {
   return newFilm;
 }
 
-async function editFilmData() {}
+// Again, reformatting Chris' code. The way we are handling ID is different, so unsure if we need to, include this as part of the spread
+async function updateFilmDataById(filmId, filmUpdates) {
+  let filmData = await readFilmData();
+  const index = await getFilmIndexById(filmId);
+
+  if (index === -1) {
+    return;
+  }
+
+  const oldFilmData = filmData[index];
+  const updated = { ...oldFilmData, ...filmUpdates, id: filmId };
+
+  filmData = [
+    ...filmData.slice(0, index),
+    updated,
+    ...filmData.slice(index + 1),
+  ];
+  await writeData(filmData);
+  console.log(filmData.length);
+  return updated;
+}
 
 module.exports = {
   readFilmData,
   getFilmById,
   replaceFilmById,
+  updateFilmDataById,
 };

@@ -3,6 +3,7 @@ const {
   readFilmData,
   getFilmById,
   replaceFilmById,
+  updateFilmDataById,
 } = require("../models/filmFunctions");
 const { type } = require("os");
 
@@ -29,7 +30,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// getting a film by its ID
+// getting a film by its ID -- ERRORS DONE PROPERLY?
 
 router.get("/:id", async (req, res) => {
   try {
@@ -55,7 +56,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// replacing a film
+// replacing a film -- ERRORS DONE PROPERLY?
 
 router.put("/:id", async (req, res) => {
   try {
@@ -68,6 +69,29 @@ router.put("/:id", async (req, res) => {
     let data = {
       success: true,
       payload: replaceFilm,
+    };
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// updating a film -- ERRORS DONE PROPERLY?
+
+router.patch("/:id", async (req, res) => {
+  try {
+    let searchedId = JSON.parse(req.params.id);
+    let updatedFilmInfo = req.body;
+    let updateFilm = await updateFilmDataById(searchedId, updatedFilmInfo);
+
+    console.log(updateFilm);
+    let data = {
+      success: true,
+      payload: updateFilm,
     };
     res.status(200).json(data);
   } catch (error) {
