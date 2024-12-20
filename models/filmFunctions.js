@@ -118,6 +118,65 @@ async function getRandomFilm() {
   return randomFilm;
 }
 
+async function getFilmByName(searched) {
+  let filmData = await readFilmData();
+  let lowercased = searched.toLowerCase();
+
+  let filteredByName = filmData.filter(
+    (film) =>
+      film["Series_Title"] &&
+      film["Series_Title"].toLowerCase().includes(lowercased)
+  );
+
+  return filteredByName;
+}
+
+async function getFilmByRating(rating) {
+  let filmData = await readFilmData();
+
+  let filteredByRating = filmData.filter(
+    (film) => film["IMDB_Rating"] === parseFloat(rating)
+  );
+
+  return filteredByRating;
+
+  /* if (filteredByRating.includes()) */
+}
+
+// get film by genre
+async function getFilmByGenre(searched) {
+  let filmData = await readFilmData();
+  let lowercased = searched.toLowerCase();
+
+  let filteredByGenre = filmData.filter(
+    (film) =>
+      film["Genre"] &&
+      film["Genre"]
+        .toLowerCase()
+        .split(",") // Look into these 2 lines
+        .some((genre) => genre.trim().includes(lowercased))
+  );
+
+  return filteredByGenre;
+}
+
+// Delete film function
+
+async function deleteFilm(id) {
+  //search through film array and select by id
+  let filmArray = await readFilmData();
+  //use findindexbyid to get index of film
+  let filmIndex = await getFilmIndexById(id);
+  //remove film from array with slice and index
+  if (filmIndex !== -1) {
+    let deletedObject = filmArray.splice(filmIndex, 1);
+    //return deleted object
+    await writeData(filmArray);
+    await assignIDs();
+    return deletedObject;
+  }
+}
+
 module.exports = {
   readFilmData,
   getFilmById,
@@ -125,4 +184,8 @@ module.exports = {
   updateFilmDataById,
   createNewFilm,
   getRandomFilm,
+  getFilmByName,
+  getFilmByRating,
+  deleteFilm,
+  getFilmByGenre,
 };

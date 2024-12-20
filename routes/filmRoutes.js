@@ -7,6 +7,10 @@ const {
   updateFilmDataById,
   createNewFilm,
   getRandomFilm,
+  getFilmByName,
+  getFilmByRating,
+  deleteFilm,
+  getFilmByGenre,
 } = require("../models/filmFunctions");
 const { type } = require("os");
 
@@ -23,6 +27,63 @@ router.get("/", async (req, res) => {
       success: true,
       payload: filmData,
     };
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// Get film by name
+
+router.get("/search", async (req, res) => {
+  try {
+    const title = req.query.title;
+
+    const findFilm = await getFilmByName(title);
+
+    let data = { success: true, payload: findFilm };
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// by genre
+router.get("/genre", async (req, res) => {
+  try {
+    const filmGenre = req.query.genre;
+
+    const findFilm = await getFilmByGenre(filmGenre);
+
+    let data = { success: true, payload: findFilm };
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// get films by rating
+
+router.get("/rating", async (req, res) => {
+  try {
+    const rating = req.query.score;
+    const findFilmByRating = await getFilmByRating(rating);
+
+    data = { success: true, payload: findFilmByRating };
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
@@ -137,6 +198,22 @@ router.patch("/:id", async (req, res) => {
       payload: updateFilm,
     };
     res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      payload: null,
+    });
+  }
+});
+
+// delete a film
+
+router.delete("/:id", async (req, res) => {
+  try {
+    let searchedId = JSON.parse(req.params.id);
+    let deletedFilm = await deleteFilm(searchedId);
+    res.status(200).json(deletedFilm);
   } catch (error) {
     console.error(error);
     res.status(500).json({
