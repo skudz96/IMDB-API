@@ -164,9 +164,17 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    let searchedId = JSON.parse(req.params.id);
+    let searchedId = req.params.id;
+
+    // regex to check if the ID is a number
+    if (!/^\d+$/.test(searchedId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid ID format" });
+    }
+
     let newFilmInfo = req.body;
-    let replaceFilm = await replaceFilmById(searchedId, newFilmInfo);
+    let replaceFilm = await replaceFilmById(parseInt(searchedId), newFilmInfo);
 
     console.log(newFilmInfo);
 
@@ -189,6 +197,7 @@ router.put("/:id", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     let searchedId = JSON.parse(req.params.id);
+
     let updatedFilmInfo = req.body;
     let updateFilm = await updateFilmDataById(searchedId, updatedFilmInfo);
 
@@ -212,6 +221,7 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     let searchedId = JSON.parse(req.params.id);
+
     let deletedFilm = await deleteFilm(searchedId);
     res.status(200).json(deletedFilm);
   } catch (error) {
